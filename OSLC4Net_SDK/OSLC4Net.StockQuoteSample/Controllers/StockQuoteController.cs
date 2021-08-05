@@ -80,7 +80,7 @@ namespace OSLC4Net.StockQuoteSample.Controllers
             List<StockQuote> stockQuoteCollection = stockQuoteStore.GetAll().ToList<StockQuote>();
 
             //Get realtime stock quote
-            retrieveStockQuoteInfo(stockQuoteCollection.ToArray<StockQuote>());
+            //retrieveStockQuoteInfo(stockQuoteCollection.ToArray<StockQuote>());
 
             //Update the resource with runtime subject and ServiceProvider URIs
             foreach (StockQuote stockQuote in stockQuoteCollection)
@@ -202,7 +202,7 @@ namespace OSLC4Net.StockQuoteSample.Controllers
         /// <param name="stockQuotes"></param>
         private static void retrieveStockQuoteInfo(params StockQuote[] stockQuotes)
         {
-            string uri = "http://www.google.com/finance/info?infotype=infoquoteall&q=";
+            string uri = "http://finance.google.com/finance/info?infotype=infoquoteall&q=";
             
             Dictionary <string,StockQuote> map = new Dictionary<string,StockQuote>();
 

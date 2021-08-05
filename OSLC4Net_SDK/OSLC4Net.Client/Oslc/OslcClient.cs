@@ -47,7 +47,7 @@ namespace OSLC4Net.Client.Oslc
         /// Initialize a new OslcClient.
         /// </summary>
         /// <param name="certCallback">optionally control SSL certificate management</param>
-        public OslcClient(RemoteCertificateValidationCallback certCallback) : this(certCallback, null)
+        public OslcClient(Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> certCallback) : this(certCallback, null)
         {
         }
 
@@ -56,7 +56,7 @@ namespace OSLC4Net.Client.Oslc
         /// </summary>
         /// <param name="certCallback">optionally control SSL certificate management</param>
         /// <param name="oauthHandler">optionally use OAuth</param>
-        protected OslcClient(RemoteCertificateValidationCallback certCallback,
+        protected OslcClient(Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> certCallback,
                              HttpMessageHandler oauthHandler)
         {
             this.formatters = new HashSet<MediaTypeFormatter>();
@@ -74,14 +74,13 @@ namespace OSLC4Net.Client.Oslc
         /// </summary>
         /// <param name="certCallback">optionally control SSL certificate management</param>
         /// <returns></returns>
-        public static WebRequestHandler CreateSSLHandler(RemoteCertificateValidationCallback certCallback = null)
+        public static HttpClientHandler CreateSSLHandler(Func<HttpRequestMessage, X509Certificate2?, X509Chain?, SslPolicyErrors, bool> certCallback = null)
         {
-            WebRequestHandler webRequestHandler = new WebRequestHandler();
+            HttpClientHandler webRequestHandler = new HttpClientHandler();
 
             webRequestHandler.AllowAutoRedirect = false;
-            webRequestHandler.ServerCertificateValidationCallback = certCallback != null ?
-                certCallback :
-                new RemoteCertificateValidationCallback(AcceptAllServerCertificates);
+            webRequestHandler.ServerCertificateCustomValidationCallback = certCallback != null ?
+                certCallback : AcceptAllServerCertificates;
 
             return webRequestHandler;
         }
