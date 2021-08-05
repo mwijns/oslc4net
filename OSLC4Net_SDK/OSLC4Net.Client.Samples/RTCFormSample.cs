@@ -51,7 +51,7 @@ namespace OSLC4Net.Client.Samples
         /// <param name="args"></param>
 	    static void Main(string[] args)
         {
-            log4net.Config.XmlConfigurator.Configure();
+            log4net.Config.XmlConfigurator.Configure(log4net.LogManager.GetRepository(System.Reflection.Assembly.GetCallingAssembly()));
 
 		    CommandLineDictionary cmd = CommandLineDictionary.FromArguments(args);
 		
